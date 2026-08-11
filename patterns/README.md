@@ -69,7 +69,7 @@ GoF 模式通常根据意图分成三类：
 
 | 模式 | 一句话用途 |
 | --- | --- |
-| [工厂方法（Factory Method）](https://refactoringguru.cn/design-patterns/factory-method) | 在父类中定义创建接口，由子类决定实例化哪种具体产品。 |
+| [工厂方法（Factory Method）](creational/factory-method/README.md) | 在父类中定义创建接口，由子类决定实例化哪种具体产品。 |
 | [抽象工厂（Abstract Factory）](https://refactoringguru.cn/design-patterns/abstract-factory) | 在不依赖具体类的情况下，创建一组相互匹配的产品。 |
 | [生成器（Builder）](https://refactoringguru.cn/design-patterns/builder) | 将复杂对象的分步构建与最终表示分离，同一过程可以生成不同结果。 |
 | [原型（Prototype）](https://refactoringguru.cn/design-patterns/prototype) | 通过复制已有对象创建新对象，避免依赖其具体类型和复杂构造过程。 |
