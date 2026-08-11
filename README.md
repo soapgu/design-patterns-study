@@ -104,6 +104,7 @@ design-patterns-study/
 
 ## 文档导航
 
+- [设计模式概要](patterns/README.md)：设计模式通用知识、适用边界及 22 个经典模式索引。
 - [学习路线图](docs/ROADMAP.md)：模式顺序、学习状态和多语言覆盖情况。
 - [模式学习模板](docs/PATTERN_TEMPLATE.md)：新增模式笔记和练习时使用的统一结构。
 
