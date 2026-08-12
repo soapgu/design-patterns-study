@@ -7,7 +7,7 @@
 | 分类 | 创建型模式（Creational Pattern） |
 | 别名 | 虚拟构造函数（Virtual Constructor） |
 | 学习状态 | 🟡 学习中 |
-| 当前阶段 | 概念理解 |
+| 当前阶段 | 体验总结 |
 | 计划实现语言 | C# |
 | 首次学习日期 | 2026-08-11 |
 | 最近复习日期 | — |
@@ -157,11 +157,85 @@ classDiagram
 
 ## 第二阶段：代码实现
 
-待后续使用 C# 完成基础示例与自动化测试。实现时重点验证：
+### 示例来源与署名
+
+| 项目 | 内容 |
+| --- | --- |
+| 原始页面标题 | C# 工厂方法模式讲解和代码示例 |
+| 原始页面 URL | <https://refactoringguru.cn/design-patterns/factory-method/csharp/example> |
+| 来源 | Refactoring.Guru |
+| 获取或学习日期 | 2026-08-11 |
+| 使用目的 | 个人、非商业学习 |
+| 参考内容 | `Creator`、`Product` 等标准角色及概念示例的协作方式 |
+| 本仓库新增或修改 | 按角色拆分文件、调整客户端输出、公开待测试类型、增加 xUnit 自动化测试 |
+
+示例保留官网的通用角色命名，便于与模式结构逐项对照。本仓库没有复制页面说明和大段注释，也不将第三方
+示例重新声明为本仓库的原创内容。
+
+### 工程结构
+
+```text
+csharp/
+├── FactoryMethod.slnx
+├── src/
+│   └── FactoryMethod/
+│       ├── FactoryMethod.csproj
+│       ├── Program.cs
+│       ├── Creator.cs
+│       ├── ConcreteCreator1.cs
+│       ├── ConcreteCreator2.cs
+│       ├── IProduct.cs
+│       ├── ConcreteProduct1.cs
+│       └── ConcreteProduct2.cs
+└── tests/
+    └── FactoryMethod.Tests/
+        ├── FactoryMethod.Tests.csproj
+        └── FactoryMethodTests.cs
+```
+
+项目目标框架为 .NET 10，开启 nullable 和 implicit usings。示例项目是可直接运行的控制台应用，测试项目
+通过项目引用访问模式角色。
+
+### 代码角色与概念对应
+
+| 模式角色 | C# 类型 | 作用 |
+| --- | --- | --- |
+| 产品 | `IProduct` | 定义所有产品共同的 `Operation()`。 |
+| 具体产品 | `ConcreteProduct1`、`ConcreteProduct2` | 提供两种不同产品行为。 |
+| 创建者 | `Creator` | 声明 `FactoryMethod()`，并由 `SomeOperation()` 执行稳定的核心流程。 |
+| 具体创建者 | `ConcreteCreator1`、`ConcreteCreator2` | 重写工厂方法并返回对应产品。 |
+| 客户端 | `Program` 中的 `RunCreator()` | 只通过 `Creator` 抽象执行同一流程。 |
+
+### 自动化测试
+
+测试聚焦模式的协作关系，不验证控制台排版和提示文案：
 
 - 创建者的核心逻辑只依赖产品接口。
 - 不同具体创建者返回不同产品，并能复用同一套核心逻辑。
-- 增加新的具体产品和创建者不需要修改已有客户端流程。
+- 测试中新增的创建者和产品可以直接接入现有核心流程。
+
+2026-08-11 使用 .NET SDK 10.0.302 完成验证：共运行 5 个测试，成功 5 个、失败 0 个、跳过 0 个。
+
+### 运行说明
+
+在 `patterns/creational/factory-method/csharp/` 下执行：
+
+```bash
+# 构建示例和测试
+dotnet build FactoryMethod.slnx
+
+# 运行全部测试
+dotnet test FactoryMethod.slnx
+
+# 运行控制台示例
+dotnet run --project src/FactoryMethod/FactoryMethod.csproj
+```
+
+### 验证结果
+
+- `dotnet build FactoryMethod.slnx`：成功，0 个警告、0 个错误。
+- `dotnet test FactoryMethod.slnx`：成功，5 个测试全部通过。
+- `dotnet run --project src/FactoryMethod/FactoryMethod.csproj`：成功，两种具体创建者均复用同一客户端流程。
 
 ## 第三阶段：体验总结
 
