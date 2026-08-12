@@ -161,13 +161,13 @@ classDiagram
 
 | 项目 | 内容 |
 | --- | --- |
-| 原始页面标题 | C# 工厂方法模式讲解和代码示例 |
-| 原始页面 URL | <https://refactoringguru.cn/design-patterns/factory-method/csharp/example> |
+| 原始页面标题 | C# 与 TypeScript 工厂方法模式讲解和代码示例 |
+| 原始页面 URL | <https://refactoringguru.cn/design-patterns/factory-method/csharp/example>、<https://refactoringguru.cn/design-patterns/factory-method/typescript/example> |
 | 来源 | Refactoring.Guru |
 | 获取或学习日期 | 2026-08-11 |
 | 使用目的 | 个人、非商业学习 |
 | 参考内容 | `Creator`、`Product` 等标准角色及概念示例的协作方式 |
-| 本仓库新增或修改 | 按角色拆分文件、调整客户端输出、公开待测试类型、增加 xUnit 自动化测试 |
+| 本仓库新增或修改 | 按角色拆分文件、调整客户端输出，增加 C#、TypeScript 与原生 JavaScript 自动化测试 |
 
 示例保留官网的通用角色命名，便于与模式结构逐项对照。本仓库没有复制页面说明和大段注释，也不将第三方
 示例重新声明为本仓库的原创内容。
@@ -191,10 +191,30 @@ csharp/
     └── FactoryMethod.Tests/
         ├── FactoryMethod.Tests.csproj
         └── FactoryMethodTests.cs
+typescript/
+├── package.json
+├── tsconfig.json
+├── src/
+│   ├── creator.ts
+│   ├── product.ts
+│   └── program.ts
+└── tests/
+    └── factory-method.test.ts
+javascript/
+├── package.json
+├── src/
+│   ├── creator.js
+│   ├── product.js
+│   └── program.js
+└── tests/
+    └── factory-method.test.js
 ```
 
 项目目标框架为 .NET 10，开启 nullable 和 implicit usings。示例项目是可直接运行的控制台应用，测试项目
 通过项目引用访问模式角色。
+
+TypeScript 使用严格类型检查、接口和抽象类，借助 `tsx` 运行，使用 Node.js 内置测试框架。JavaScript 使用
+Node.js ESM 和内置测试框架，不需要第三方运行依赖。
 
 ### 代码角色与概念对应
 
@@ -206,6 +226,9 @@ csharp/
 | 具体创建者 | `ConcreteCreator1`、`ConcreteCreator2` | 重写工厂方法并返回对应产品。 |
 | 客户端 | `Program` 中的 `RunCreator()` | 只通过 `Creator` 抽象执行同一流程。 |
 
+TypeScript 和 JavaScript 保持相同角色关系。TypeScript 的 `Product` 接口提供编译期约束；JavaScript 没有
+接口声明，新增产品只要在运行时提供 `operation()` 即可，体现鸭子类型。
+
 ### 自动化测试
 
 测试聚焦模式的协作关系，不验证控制台排版和提示文案：
@@ -215,6 +238,9 @@ csharp/
 - 测试中新增的创建者和产品可以直接接入现有核心流程。
 
 2026-08-11 使用 .NET SDK 10.0.302 完成验证：共运行 5 个测试，成功 5 个、失败 0 个、跳过 0 个。
+
+2026-08-12 使用 Node.js 24 完成验证：TypeScript 3 个测试、JavaScript 4 个测试全部通过。JavaScript 额外
+验证了基础创建者未实现工厂方法时会明确失败。
 
 ### 运行说明
 
@@ -231,11 +257,29 @@ dotnet test FactoryMethod.slnx
 dotnet run --project src/FactoryMethod/FactoryMethod.csproj
 ```
 
+在 `typescript/` 下执行：
+
+```bash
+npm install
+npm run check
+npm test
+npm start
+```
+
+在 `javascript/` 下执行（无须安装依赖）：
+
+```bash
+npm test
+npm start
+```
+
 ### 验证结果
 
 - `dotnet build FactoryMethod.slnx`：成功，0 个警告、0 个错误。
 - `dotnet test FactoryMethod.slnx`：成功，5 个测试全部通过。
 - `dotnet run --project src/FactoryMethod/FactoryMethod.csproj`：成功，两种具体创建者均复用同一客户端流程。
+- TypeScript：严格类型检查通过，3 个测试全部通过，示例运行成功。
+- JavaScript：4 个测试全部通过，示例运行成功。
 
 ## 第三阶段：体验总结
 
@@ -243,12 +287,14 @@ dotnet run --project src/FactoryMethod/FactoryMethod.csproj
 
 - 与直接构造和简单工厂相比，工厂方法增加的结构是否值得。
 - 继承式扩展在 C# 中的可读性、测试体验和限制。
+- TypeScript 的接口约束与 JavaScript 鸭子类型分别带来了什么收益和风险。
 - 实际项目中依赖注入容器、委托或泛型能否提供更简单的替代方案。
 
 ## 参考资料
 
 - [Refactoring.Guru：工厂方法模式](https://refactoringguru.cn/design-patterns/factory-method)
 - [Refactoring.Guru：C# 工厂方法示例](https://refactoringguru.cn/design-patterns/factory-method/csharp/example)
+- [Refactoring.Guru：TypeScript 工厂方法示例](https://refactoringguru.cn/design-patterns/factory-method/typescript/example)
 - 《设计模式：可复用面向对象软件的基础》：Factory Method 章节
 
 本文为学习归纳，概念说明和示例场景使用自己的语言重新组织；完整图解、伪代码及实现步骤请查看原始资料。

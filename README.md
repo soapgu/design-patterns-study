@@ -63,7 +63,7 @@
 
 ## 语言计划与目录约定
 
-C# 是首个实践语言，TypeScript 是当前的第二候选语言。它们只是当前计划，不是仓库支持语言的限制；
+C# 是首个实践语言，TypeScript 和运行于 Node.js 的原生 JavaScript 是当前扩展语言。它们只是当前计划，不是仓库支持语言的限制；
 未来可以根据模式特点和学习需要增加 Java、Python、Go、Rust 等语言。
 
 目录按照“模式 → 语言”组织。每个模式集中保存概念笔记、来源、不同语言实现和体验总结：
@@ -78,6 +78,9 @@ design-patterns-study/
     │       │   ├── src/
     │       │   └── tests/
     │       ├── typescript/
+    │       │   ├── src/
+    │       │   └── tests/
+    │       ├── javascript/
     │       │   ├── src/
     │       │   └── tests/
     │       └── <language>/
