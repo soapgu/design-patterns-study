@@ -37,8 +37,8 @@
 
 | 顺序 | 模式 | 英文名 | 学习状态 | C# | TypeScript | JavaScript (Node.js) |
 | ---: | --- | --- | --- | --- | --- | --- |
-| 1 | 工厂方法 | Factory Method | 🟡 学习中 | ✅ | ✅ | ✅ |
-| 2 | 生成器 | Builder | ⬜ 待学习 | — | — | — |
+| 1 | 工厂方法 | Factory Method | ✅ 已完成 | ✅ | ✅ | ✅ |
+| 2 | 生成器 | Builder | 🟡 学习中 | — | — | — |
 | 3 | 单例 | Singleton | ⬜ 待学习 | — | — | — |
 | 4 | 原型 | Prototype | ⬜ 待学习 | — | — | — |
 | 5 | 抽象工厂 | Abstract Factory | ⬜ 待学习 | — | — | — |
