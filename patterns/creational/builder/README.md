@@ -7,8 +7,8 @@
 | 分类 | 创建型模式（Creational Pattern） |
 | 常见中文名 | 生成器模式、建造者模式 |
 | 学习状态 | 🟡 学习中 |
-| 当前阶段 | 概念理解 |
-| 计划实现语言 | C# 优先，TypeScript 与 JavaScript（Node.js）按需实现 |
+| 当前阶段 | 体验总结 |
+| 已实现语言 | C# |
 | 首次学习日期 | 2026-08-12 |
 | 最近复习日期 | — |
 
@@ -138,12 +138,84 @@
 
 ## 第二阶段：代码实现
 
-待后续参考 Refactoring.Guru 对应语言的基础示例完成。基础完成条件：
+### 示例来源与署名
 
-- 示例可以独立运行。
-- 自动化测试覆盖分步构造、不同构造方案和结果隔离。
-- 能把代码类型与生成器、具体生成器、产品、主管和客户端逐项对应。
-- 记录 C#、TypeScript 与 JavaScript 对经典结构的不同简化方式。
+| 项目 | 内容 |
+| --- | --- |
+| 原始页面标题 | C# 生成器模式讲解和代码示例 |
+| 原始页面 URL | <https://refactoringguru.cn/design-patterns/builder/csharp/example> |
+| 来源 | Refactoring.Guru |
+| 获取或学习日期 | 2026-08-13 |
+| 使用目的 | 个人、非商业学习 |
+| 参考内容 | `IBuilder`、`ConcreteBuilder`、`Product`、`Director` 的角色与协作方式 |
+| 本仓库新增或修改 | 按角色拆分文件、让主管通过参数接收生成器、提供只读部件视图，并增加 xUnit 测试 |
+
+示例保留官网的通用角色命名，便于与模式结构对应；实现按本仓库工程规范重新组织，没有复制页面的大段说明和
+注释，也不将第三方示例重新声明为本仓库原创内容。
+
+### 工程结构
+
+```text
+csharp/
+├── Builder.slnx
+├── src/
+│   └── Builder/
+│       ├── Builder.csproj
+│       ├── IBuilder.cs
+│       ├── ConcreteBuilder.cs
+│       ├── Product.cs
+│       ├── Director.cs
+│       └── Program.cs
+└── tests/
+    └── Builder.Tests/
+        ├── Builder.Tests.csproj
+        └── BuilderTests.cs
+```
+
+项目目标框架为 .NET 10，开启 nullable 和 implicit usings。控制台示例分别演示主管构造最小产品、完整产品，
+以及客户端绕过主管直接定制产品。
+
+### 代码角色与概念对应
+
+| 模式角色 | C# 类型 | 作用 |
+| --- | --- | --- |
+| 生成器 | `IBuilder` | 声明构造 A、B、C 三个部件的共同步骤。 |
+| 具体生成器 | `ConcreteBuilder` | 维护构造中的产品，实现步骤并在返回结果后重置。 |
+| 产品 | `Product` | 保存最终部件，并通过只读集合暴露构造结果。 |
+| 主管 | `Director` | 封装最小产品和完整产品两种可复用配方。 |
+| 客户端 | `Program` | 选择生成器与配方，也可直接控制构造步骤。 |
+
+官网示例通过 `Director.Builder` 属性保存生成器。本仓库改为由每个构造方法接收 `IBuilder`，让主管保持无状态，
+也更直观地展示同一配方可以作用于不同生成器。
+
+### 自动化测试
+
+5 个测试覆盖：
+
+- 客户端能够自由组合构造步骤。
+- 主管能够生成最小产品和完整产品，并保持规定顺序。
+- 取得产品后生成器自动重置，之前返回的结果不受后续构造影响。
+- 自定义生成器可以通过 `IBuilder` 接入同一主管流程。
+
+测试关注参与者协作和状态边界，不验证控制台固定排版，也不制造与模式无关的异常场景。
+
+### 运行说明
+
+在 `patterns/creational/builder/csharp/` 下执行：
+
+```bash
+dotnet build Builder.slnx
+dotnet test Builder.slnx
+dotnet run --project src/Builder/Builder.csproj
+```
+
+在 VS Code 中直接打开 `csharp/` 目录后，可以在“运行和调试”面板选择“运行 Builder”并按 `F5`。
+
+### 验证结果
+
+- `dotnet build`：成功，0 个警告、0 个错误。
+- `dotnet test`：成功，5 个测试全部通过。
+- `dotnet run`：成功，最小产品、完整产品和自定义产品均按预期输出。
 
 不强制编写复杂的重构前代码；问题代码与重构体验作为可选进阶练习。
 
@@ -160,6 +232,7 @@
 ## 参考资料
 
 - [Refactoring.Guru：生成器模式](https://refactoringguru.cn/design-patterns/builder)
+- [Refactoring.Guru：C# 生成器示例](https://refactoringguru.cn/design-patterns/builder/csharp/example)
 - 《设计模式：可复用面向对象软件的基础》：Builder 章节
 
 本文为学习归纳，使用自己的语言重新组织概念，不复制原网页的大段文字、代码或插图。完整图解、伪代码和

@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "运行 Builder",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "构建 Builder",
+      "program": "${workspaceFolder}/src/Builder/bin/Debug/net10.0/Builder.dll",
+      "cwd": "${workspaceFolder}/src/Builder",
+      "console": "integratedTerminal",
+      "stopAtEntry": false
+    }
+  ]
+}
