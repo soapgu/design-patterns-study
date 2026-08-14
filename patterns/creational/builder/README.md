@@ -8,7 +8,7 @@
 | 常见中文名 | 生成器模式、建造者模式 |
 | 学习状态 | 🟡 学习中 |
 | 当前阶段 | 体验总结 |
-| 已实现语言 | C# |
+| 已实现语言 | C#、TypeScript、JavaScript（Node.js） |
 | 首次学习日期 | 2026-08-12 |
 | 最近复习日期 | — |
 
@@ -142,13 +142,13 @@
 
 | 项目 | 内容 |
 | --- | --- |
-| 原始页面标题 | C# 生成器模式讲解和代码示例 |
-| 原始页面 URL | <https://refactoringguru.cn/design-patterns/builder/csharp/example> |
+| 原始页面标题 | C# 与 TypeScript 生成器模式讲解和代码示例 |
+| 原始页面 URL | <https://refactoringguru.cn/design-patterns/builder/csharp/example>、<https://refactoringguru.cn/design-patterns/builder/typescript/example> |
 | 来源 | Refactoring.Guru |
 | 获取或学习日期 | 2026-08-13 |
 | 使用目的 | 个人、非商业学习 |
 | 参考内容 | `IBuilder`、`ConcreteBuilder`、`Product`、`Director` 的角色与协作方式 |
-| 本仓库新增或修改 | 按角色拆分文件、让主管通过参数接收生成器、提供只读部件视图，并增加 xUnit 测试 |
+| 本仓库新增或修改 | 按角色拆分文件、让主管通过参数接收生成器、提供只读部件视图，并增加三种语言的自动化测试 |
 
 示例保留官网的通用角色命名，便于与模式结构对应；实现按本仓库工程规范重新组织，没有复制页面的大段说明和
 注释，也不将第三方示例重新声明为本仓库原创内容。
@@ -170,10 +170,32 @@ csharp/
     └── Builder.Tests/
         ├── Builder.Tests.csproj
         └── BuilderTests.cs
+typescript/
+├── package.json
+├── tsconfig.json
+├── src/
+│   ├── builder.ts
+│   ├── director.ts
+│   ├── product.ts
+│   └── program.ts
+└── tests/
+    └── builder.test.ts
+javascript/
+├── package.json
+├── src/
+│   ├── builder.js
+│   ├── director.js
+│   ├── product.js
+│   └── program.js
+└── tests/
+    └── builder.test.js
 ```
 
 项目目标框架为 .NET 10，开启 nullable 和 implicit usings。控制台示例分别演示主管构造最小产品、完整产品，
 以及客户端绕过主管直接定制产品。
+
+TypeScript 使用严格类型检查、私有字段、只读数组和 `Builder` 接口，借助 `tsx` 运行。JavaScript 使用 Node.js
+ESM、私有字段和 JSDoc，不需要第三方运行依赖。
 
 ### 代码角色与概念对应
 
@@ -188,9 +210,12 @@ csharp/
 官网示例通过 `Director.Builder` 属性保存生成器。本仓库改为由每个构造方法接收 `IBuilder`，让主管保持无状态，
 也更直观地展示同一配方可以作用于不同生成器。
 
+TypeScript 的结构化类型允许普通对象只要满足 `Builder` 接口就接入主管，无需显式声明 `implements`。
+JavaScript 版本通过 JSDoc 描述同样的最小结构，使 IDE 能提供补全，但实际约束仍在运行时。
+
 ### 自动化测试
 
-5 个测试覆盖：
+每种语言均有 5 个测试，覆盖：
 
 - 客户端能够自由组合构造步骤。
 - 主管能够生成最小产品和完整产品，并保持规定顺序。
@@ -211,11 +236,29 @@ dotnet run --project src/Builder/Builder.csproj
 
 在 VS Code 中直接打开 `csharp/` 目录后，可以在“运行和调试”面板选择“运行 Builder”并按 `F5`。
 
+在 `typescript/` 下执行：
+
+```bash
+npm install
+npm run check
+npm test
+npm start
+```
+
+在 `javascript/` 下执行（无须安装依赖）：
+
+```bash
+npm test
+npm start
+```
+
 ### 验证结果
 
 - `dotnet build`：成功，0 个警告、0 个错误。
 - `dotnet test`：成功，5 个测试全部通过。
 - `dotnet run`：成功，最小产品、完整产品和自定义产品均按预期输出。
+- TypeScript：严格类型检查通过，5 个测试全部通过，示例运行成功。
+- JavaScript：5 个测试全部通过，示例运行成功。
 
 不强制编写复杂的重构前代码；问题代码与重构体验作为可选进阶练习。
 
@@ -233,6 +276,7 @@ dotnet run --project src/Builder/Builder.csproj
 
 - [Refactoring.Guru：生成器模式](https://refactoringguru.cn/design-patterns/builder)
 - [Refactoring.Guru：C# 生成器示例](https://refactoringguru.cn/design-patterns/builder/csharp/example)
+- [Refactoring.Guru：TypeScript 生成器示例](https://refactoringguru.cn/design-patterns/builder/typescript/example)
 - 《设计模式：可复用面向对象软件的基础》：Builder 章节
 
 本文为学习归纳，使用自己的语言重新组织概念，不复制原网页的大段文字、代码或插图。完整图解、伪代码和
